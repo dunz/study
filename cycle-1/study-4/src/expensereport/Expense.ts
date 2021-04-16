@@ -1,11 +1,13 @@
-import {Type} from './enum/Type';
-
-export default class Expense {
-    public type: Type;
+export default abstract class Expense {
     public amount: number;
 
-    constructor(type: Type, amount: number) {
-        this.type = type;
+    constructor(amount: number) {
         this.amount = amount;
     }
+
+    public abstract isOverages();
+
+    public abstract getName(expense: Expense);
+
+    public abstract isMeal(expense: Expense);
 }

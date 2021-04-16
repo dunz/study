@@ -1,15 +1,17 @@
 import MockReportPrinter from './MockReportPrinter';
 import {Type} from '../src/expensereport/enum/Type';
-import Expense from '../src/expensereport/Expense';
 import {changeToUsdFormat} from '../src/expensereport/utils/util';
-import ExpenseReport from '../src/expensereport/ExpenseReport';
+import ExpenseReporter from '../src/expensereport/ExpenseReporter';
+import {DinnerExpense} from '../src/expensereport/DinnerExpense';
+import {BreakfastExpense} from '../src/expensereport/BreakfastExpense';
+import {CarRentalExpense} from '../src/expensereport/CarRentalExpense';
 
 describe("Tdd Test ExpenseReporter", () => {
-    let report: ExpenseReport = new ExpenseReport();
+    let report: ExpenseReporter = new ExpenseReporter();
     let printer: MockReportPrinter = new MockReportPrinter();
 
     beforeEach(() => {
-        report = new ExpenseReport();
+        report = new ExpenseReporter();
         printer = new MockReportPrinter();
     });
 
@@ -26,7 +28,7 @@ describe("Tdd Test ExpenseReporter", () => {
     });
 
     it("printOneDinner", () => {
-        report.addExpense(new Expense(Type.DINNER, 1678));
+        report.addExpense(new DinnerExpense(1678));
         report.printReport(printer);
 
         expect(
@@ -39,8 +41,8 @@ describe("Tdd Test ExpenseReporter", () => {
     });
 
     it("twoMeals", () => {
-        report.addExpense(new Expense(Type.DINNER, 1000));
-        report.addExpense(new Expense(Type.BREAKFAST, 500));
+        report.addExpense(new DinnerExpense(1000));
+        report.addExpense(new BreakfastExpense(500));
         report.printReport(printer);
 
         expect(
@@ -55,9 +57,9 @@ describe("Tdd Test ExpenseReporter", () => {
     });
 
     it("twoMealsAndCarRental", () => {
-        report.addExpense(new Expense(Type.DINNER, 1000));
-        report.addExpense(new Expense(Type.BREAKFAST, 500));
-        report.addExpense(new Expense(Type.CAR_RENTAL, 50000));
+        report.addExpense(new DinnerExpense(1000));
+        report.addExpense(new BreakfastExpense(500));
+        report.addExpense(new CarRentalExpense(50000));
         report.printReport(printer);
 
         expect(
@@ -72,10 +74,10 @@ describe("Tdd Test ExpenseReporter", () => {
     });
 
     it("overages", () => {
-        report.addExpense(new Expense(Type.BREAKFAST, 1000));
-        report.addExpense(new Expense(Type.BREAKFAST, 1001));
-        report.addExpense(new Expense(Type.DINNER, 5000));
-        report.addExpense(new Expense(Type.DINNER, 5001));
+        report.addExpense(new BreakfastExpense(1000));
+        report.addExpense(new BreakfastExpense(1001));
+        report.addExpense(new DinnerExpense(5000));
+        report.addExpense(new DinnerExpense(5001));
         report.printReport(printer);
 
         expect(
